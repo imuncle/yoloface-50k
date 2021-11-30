@@ -69,7 +69,7 @@ void prepare_yolo_data()
 // 定义sigmoid函数
 float sigmoid(float x)
 {
-	float y = 1/(1+expf(x));
+	float y = 1/(1+expf(-x));
 	return y;
 }
 
@@ -95,10 +95,10 @@ void post_process()
 				grid_x = i % 7;
 				grid_y = (i - grid_x)/7;
 				// 这里的15和0.14218327403068542就是网络量化后给出的缩放偏移量
-				x = ((float)out_data[i*18+j*6+1]+15)*0.14218327403068542f;
-				y = ((float)out_data[i*18+j*6]+15)*0.14218327403068542f;
-				w = ((float)out_data[i*18+j*6+3]+15)*0.14218327403068542f;
-				h = ((float)out_data[i*18+j*6+2]+15)*0.14218327403068542f;
+				x = ((float)out_data[i*18+j*6]+15)*0.14218327403068542f;
+				y = ((float)out_data[i*18+j*6+1]+15)*0.14218327403068542f;
+				w = ((float)out_data[i*18+j*6+2]+15)*0.14218327403068542f;
+				h = ((float)out_data[i*18+j*6+3]+15)*0.14218327403068542f;
                 // 网络下采样三次，缩小了8倍，这里给还原回56*56的尺度
 				x = (sigmoid(x)+grid_x) * 8;
 				y = (sigmoid(y)+grid_y) * 8;
